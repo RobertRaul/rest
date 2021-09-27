@@ -20,3 +20,11 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+Route::view('menus','templates.menu.menu');
+Route::view('mesas','templates.mesa.mesa');
+Route::view('clientes','templates.cliente.cliente');
+Route::view('camareros','templates.camarero.camarero');
+Route::view('solicitud','templates.solicitud.solicitud');
+Route::view('cobros','templates.cobros.cobros');

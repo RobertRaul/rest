@@ -3,35 +3,34 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
-use App\Models\Menu;
+use App\Models\Mesa;
 use Livewire\WithPagination;
 //para fecha y hora
 use Carbon\Carbon;
-
-class MenuController extends Component
+class MesaController extends Component
 {
     //paginado para la tabla y el tema es bootstrap     
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
     //creacion de variables 
-    public $men_nomb,$men_descripcion,$men_fech;
+    public $mes_numero,$mes_sillas;
     //Que id es para las acciones
     public $selected_id;
     public $updateMode = false;
     //configuraciones para la tabla
-    public $Campo ='men_id';
+    public $Campo ='mes_id';
     public $OrderBy='desc';
     public $pagination=5;
     public $buscar='';   
 
     public function render()
     {       
-        $info=Menu::query()
+        $info=Mesa::query()
         ->search($this->buscar)
         ->orderBy($this->Campo,$this->OrderBy)
         ->paginate($this->pagination);
         
-        return view('livewire.menu.listar',[
+        return view('livewire.mesa.listar',[
             'dtResult' =>$info,
         ]);
     }  
@@ -47,40 +46,36 @@ class MenuController extends Component
     private function resetInput()
     {		
 		$this->selected_id = null;
-		$this->men_nomb = null;
-		$this->men_descripcion = null;
-		$this->men_fech = null;
+		$this->mes_numero = null;
+		$this->mes_sillas = null;
     }
 
-     //metodo para registrar 
+     //metodo para registrar
      public function store()
      { 
          $this->validate([
-         'men_nomb' => 'required',
-         'men_descripcion' => 'required',
-         'men_fech' => 'required',        
+         'mes_numero' => 'required',
+         'mes_sillas' => 'required',      
          ]);
  
-         Menu::create([ 
-             'men_nomb' => $this-> men_nomb,
-             'men_descripcion' => $this-> men_descripcion,
-             'men_fech' => $this-> men_fech
+         Mesa::create([ 
+             'mes_numero' => $this-> mes_numero,
+             'mes_sillas' => $this-> mes_sillas,
          ]);
          
          $this->resetInput();
          $this->emit('closeModal');
-         $this->emit('msgOK','Menu Registrado Correctamente');       
+         $this->emit('msgOK','Mesa Registrada Correctamente');       
      }
      
-    //editar 
+    //editar
     public function edit($id)
     {
-        $record = Menu::findOrFail($id);
+        $record = Mesa::findOrFail($id);
 
         $this->selected_id = $id; 
-		$this->men_nomb = $record-> men_nomb;
-		$this->men_descripcion = $record-> men_descripcion;
-		$this->men_fech = $record-> men_fech;
+		$this->mes_numero = $record-> mes_numero;
+		$this->mes_sillas = $record-> mes_sillas;
 		
         $this->updateMode = true;
     }
@@ -89,34 +84,31 @@ class MenuController extends Component
     public function update()
     {
         $this->validate([
-            'men_nomb' => 'required',
-            'men_descripcion' => 'required',
-            'men_fech' => 'required',        
+            'mes_numero' => 'required',
+            'mes_sillas' => 'required',     
             ]);
 
         if ($this->selected_id) {
-			$record = Menu::find($this->selected_id);
+			$record = Mesa::find($this->selected_id);
             $record->update([ 
-			'men_nomb' => $this-> men_nomb,
-			'men_descripcion' => $this-> men_descripcion,
-			'men_fech' => $this-> men_fech
+			'mes_numero' => $this-> mes_numero,
+			'mes_sillas' => $this-> mes_sillas,
             ]);
 
             $this->resetInput();
             $this->updateMode = false;
             $this->emit('closeModal');
-            $this->emit('msgEDIT','Menu Actualizado Correctamente');  
+            $this->emit('msgEDIT','Mesa Actualizada Correctamente');  
         }
     }
 
-    //Desactivar
+    //desactivar
     public function disable($id)
     {
-        $record=Menu::find($id);
+        $record=Mesa::find($id);
         $record->update([
-            'men_estado'=>'Desactivado'
+            'mes_estado'=>'Desactivado'
         ]);
-        $this->emit('msgEDIT','Menu Desactivado Correctamente');   
+        $this->emit('msgINFO','Mesa Desactivada Correctamente');   
     }
-    
 }
