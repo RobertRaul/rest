@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MesasReportesController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,3 +29,7 @@ Route::view('clientes','templates.cliente.cliente');
 Route::view('camareros','templates.camarero.camarero');
 Route::view('solicitud','templates.solicitud.solicitud');
 Route::view('cobros','templates.cobros.cobros');
+
+
+
+Route::get('pdfmesas', [MesasReportesController::class,'createPDF']);

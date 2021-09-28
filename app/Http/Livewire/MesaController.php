@@ -5,14 +5,13 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use App\Models\Mesa;
 use Livewire\WithPagination;
-//para fecha y hora
-use Carbon\Carbon;
+
 class MesaController extends Component
 {
-    //paginado para la tabla y el tema es bootstrap     
+    //paginado para la tabla y el tema es bootstrap
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
-    //creacion de variables 
+    //creacion de variables
     public $mes_numero,$mes_sillas;
     //Que id es para las acciones
     public $selected_id;
@@ -21,19 +20,20 @@ class MesaController extends Component
     public $Campo ='mes_id';
     public $OrderBy='desc';
     public $pagination=5;
-    public $buscar='';   
+    public $buscar='';
+
 
     public function render()
-    {       
+    {
         $info=Mesa::query()
         ->search($this->buscar)
         ->orderBy($this->Campo,$this->OrderBy)
         ->paginate($this->pagination);
-        
+
         return view('livewire.mesa.listar',[
             'dtResult' =>$info,
         ]);
-    }  
+    }
 
      //cancelacion y limpiar inputs
      public function cancel()
@@ -44,7 +44,7 @@ class MesaController extends Component
 
      //metodo para limpiar imputs
     private function resetInput()
-    {		
+    {
 		$this->selected_id = null;
 		$this->mes_numero = null;
 		$this->mes_sillas = null;
@@ -52,31 +52,31 @@ class MesaController extends Component
 
      //metodo para registrar
      public function store()
-     { 
+     {
          $this->validate([
          'mes_numero' => 'required',
-         'mes_sillas' => 'required',      
+         'mes_sillas' => 'required',
          ]);
- 
-         Mesa::create([ 
+
+         Mesa::create([
              'mes_numero' => $this-> mes_numero,
              'mes_sillas' => $this-> mes_sillas,
          ]);
-         
+
          $this->resetInput();
          $this->emit('closeModal');
-         $this->emit('msgOK','Mesa Registrada Correctamente');       
+         $this->emit('msgOK','Mesa Registrada Correctamente');
      }
-     
+
     //editar
     public function edit($id)
     {
         $record = Mesa::findOrFail($id);
 
-        $this->selected_id = $id; 
+        $this->selected_id = $id;
 		$this->mes_numero = $record-> mes_numero;
 		$this->mes_sillas = $record-> mes_sillas;
-		
+
         $this->updateMode = true;
     }
 
@@ -85,12 +85,12 @@ class MesaController extends Component
     {
         $this->validate([
             'mes_numero' => 'required',
-            'mes_sillas' => 'required',     
+            'mes_sillas' => 'required',
             ]);
 
         if ($this->selected_id) {
 			$record = Mesa::find($this->selected_id);
-            $record->update([ 
+            $record->update([
 			'mes_numero' => $this-> mes_numero,
 			'mes_sillas' => $this-> mes_sillas,
             ]);
@@ -98,7 +98,7 @@ class MesaController extends Component
             $this->resetInput();
             $this->updateMode = false;
             $this->emit('closeModal');
-            $this->emit('msgEDIT','Mesa Actualizada Correctamente');  
+            $this->emit('msgEDIT','Mesa Actualizada Correctamente');
         }
     }
 
@@ -109,6 +109,11 @@ class MesaController extends Component
         $record->update([
             'mes_estado'=>'Desactivado'
         ]);
-        $this->emit('msgINFO','Mesa Desactivada Correctamente');   
+        $this->emit('msgINFO','Mesa Desactivada Correctamente');
+    }
+
+    public function ReporteMesas()
+    {
+        $this->emit('pdf_mesa');
     }
 }
