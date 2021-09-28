@@ -10,8 +10,11 @@
                     <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal" >
                         <i class="fas fa-plus"></i>
                         Nuevo
-                    </button>  
-                    
+                    </button>
+
+                    <button type="button" class="btn btn-warning" wire:click="ReporteMesas()">
+                    Reporte
+                    </button>
                 </div>
             </div>
         </div>
@@ -19,7 +22,7 @@
 
     <div class="card-body">
         @include('livewire.mesa.crear')
-						
+
         @include('eventos.busqueda')
 
         <div class="table-responsive">
@@ -58,3 +61,16 @@
         </div>
     </div>
 </div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded',function(){
+  window.livewire.on('pdf_mesa',ticket =>
+        {
+            var ruta="{{ url('pdfmesas')}}"
+            var w =window.open(ruta)
+            //var w =window.open(ruta,"_blank","width=1,height=1")
+           // w.close()//cierra la ventana de impresion
+        })
+    })
+</script>
