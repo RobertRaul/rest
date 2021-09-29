@@ -25,29 +25,31 @@ class MesasReportesController extends Controller
         $header = array('ID', 'Numero', 'Nro Sillas', 'Estado');
 
         // Colores, ancho de línea y fuente en negrita
-        $pdf->SetFillColor(255, 0, 0);
-        $pdf->SetTextColor(255);
+        $pdf->SetFillColor(83, 139, 250);
+        $pdf->SetTextColor(0);
         $pdf->SetDrawColor(0, 0, 0);
         $pdf->SetLineWidth(.3);
         $pdf->SetFont('', 'B');
         // Movernos a la derecha
         $pdf->Cell(30);
         // Cabecera
-        $w = array(20, 35, 45, 40);
+        $w = array(20, 40, 45, 40);
         for ($i = 0; $i < count($header); $i++)
             $pdf->Cell($w[$i], 6, $header[$i], 1, 0, 'C', true);
+
         $pdf->Ln();
         // Restauración de colores y fuentes
+        $pdf->SetFont('Arial','',12);
         $pdf->SetFillColor(224, 235, 255);
         $pdf->SetTextColor(0);
-        $pdf->SetFont('');
+
 
         // Datos
         $fill = false;
         foreach ($lista as $row) {
             // Movernos a la derecha
             $pdf->Cell(30);
-            $pdf->Cell($w[0], 6, $row['mes_id'], 'LR', 0, 'C', $fill); // $ALIGN: C=CENTER , L = LEFT , R = RIGHT
+            $pdf->Cell($w[0], 6, $row['mes_id']    , 'LR', 0, 'C', $fill); // $ALIGN: C=CENTER , L = LEFT , R = RIGHT
             $pdf->Cell($w[1], 6, $row['mes_numero'], 'LR', 0, 'C', $fill);
             $pdf->Cell($w[2], 6, $row['mes_sillas'], 'LR', 0, 'C', $fill);
             $pdf->Cell($w[3], 6, $row['mes_estado'], 'LR', 0, 'C', $fill);
