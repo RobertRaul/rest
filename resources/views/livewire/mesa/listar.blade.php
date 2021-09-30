@@ -67,7 +67,7 @@
     document.addEventListener('DOMContentLoaded',function(){
   window.livewire.on('pdf_mesa',ticket =>
         {
-            var ruta="{{ url('pdfmesas')}}"
+            var ruta="{{ url('reportemesas')}}"
             var w =window.open(ruta)
             //var w =window.open(ruta,"_blank","width=1,height=1")
            // w.close()//cierra la ventana de impresion

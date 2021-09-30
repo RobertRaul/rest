@@ -32,4 +32,4 @@ Route::view('cobros','templates.cobros.cobros');
 
 
 
-Route::get('pdfmesas', [MesasReportesController::class,'createPDF']);
+Route::get('reportemesas', [MesasReportesController::class,'createPDF']);

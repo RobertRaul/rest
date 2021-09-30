@@ -1,6 +1,8 @@
 <?php
 namespace App\Http\Controllers;
 use Codedge\Fpdf\Fpdf\Fpdf;
+//para fecha y hora
+use Carbon\Carbon;
 
 class PDF extends Fpdf
 {
@@ -14,15 +16,26 @@ class PDF extends Fpdf
     function Header()
     {
         // Logo
-        $this->Image(asset('/images/report_list/apple_logo.jpg'), 10, 8, 20); // X = HORIZONTAL  , Y = VERTICAL ,ANCHO ,  ALTO
+        $this->Image(asset('/images/report_list/apple_logo.jpg'), 8, 3, 20); // X = HORIZONTAL  , Y = VERTICAL ,ANCHO ,  ALTO
         // Arial bold 15
         $this->SetFont('Arial', 'B', 15);
         // Movernos a la derecha
         $this->Cell(80);
         // Título
-        $this->Cell(30, 10, $this->dato ,  0, 0, 'C');
+        $this->Cell(30, 10, $this->dato,  0, 0, 'C');
+        //Letras Hora y Fecha
+        $this->SetFont('Arial', '', 8);
+        // Horas y Fecha
+        $this->Cell(50);
+        $this->Cell(0,0,"Fecha: " .Carbon::now()->format('d/m/Y'));
+
+        // Satlto de Line par al Hora
+        $this->Ln(4);
+        // Movernos a la derecha para la hora
+        $this->Cell(165);
+        $this->Cell(80,0,"Hora: ". Carbon::now()->format('H:i:s'));
         // Salto de línea
-        $this->Ln(20);
+        $this->Ln(14);
     }
 
     // Pie de página
